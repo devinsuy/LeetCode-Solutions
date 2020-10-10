@@ -18,7 +18,7 @@ Proceedure O(row*column) or "linear" time and memory:
     - Iterate through all cells, if not visited AND grid[row][column] == 1, call BFS(row, column), increment island_count
         - Within BFS, pop from stack, call get_neighbors(current_row, current_column)
         - For each neighbor add to visited set, THEN if grid[neighbor_row][neighbor_column] == 1 -> push onto stack
-    - Finish iteration, return island_count
+    - Finish iteration, return island_count 
 
 """
 
