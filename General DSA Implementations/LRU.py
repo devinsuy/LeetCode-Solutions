@@ -24,6 +24,12 @@ class DLL:
             self.head = self.tail = node
         else:
             node.prev = None
+            self.head.prev = node
+            self.head = node
+
+    def add_to_end(self, node):
+            self.head = self.tail = node 
+        else:
             node.prev = self.tail
             node.next = None
             self.tail.next = node
