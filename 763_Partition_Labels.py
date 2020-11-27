@@ -9,7 +9,7 @@ class Partition:
         # Maintain a set of numbers that still need to be allocated
         # before the partition can be complete
         self.remaining = set([]) 
-        for i in range(self.min_index, self.max_index+1):
+        for i in range(self.min_index+1, self.max_index):
             self.remaining.add(i)
     
     def is_done(self):
@@ -28,12 +28,12 @@ class Partition:
         low, high = index_range
         
         if low < self.min_index:
-            for i in range(low, self.min_index):
+            for i in range(low+1, self.min_index):
                 self.remaining.add(i)
             self.min_index = low
 
         if high > self.max_index:
-            for i in range(self.max_index+1, high+1):
+            for i in range(self.max_index+1, high):
                 self.remaining.add(i)
             self.max_index = high
 
@@ -78,10 +78,6 @@ class Solution:
             partitions.append(curr_partition)
 
         return partition_sizes
-
-
-
-
 
 
 
