@@ -1,109 +1,53 @@
+from typing import List
+from copy import deepcopy 
+
 class Solution:
-    def letterCombinations(self, digits: str) -> List[str]:
-        pass 
+    # Recursively generate combinations
+    def letterCombinations_util(self, curr_str: str, digit_index: int):
+        # Base case end of tree reached, save finished combination 
+        if digit_index == self.exit_len:
+            self.combos.append(curr_str)
+            return
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# class Solution:
-#     def letterCombinations(self, digits):
-#         """
-#         :type digits: str
-#         :rtype: List[str]
-#         """
-#         phone = {'2': ['a', 'b', 'c'],
-#                  '3': ['d', 'e', 'f'],
-#                  '4': ['g', 'h', 'i'],
-#                  '5': ['j', 'k', 'l'],
-#                  '6': ['m', 'n', 'o'],
-#                  '7': ['p', 'q', 'r', 's'],
-#                  '8': ['t', 'u', 'v'],
-#                  '9': ['w', 'x', 'y', 'z']}
-                
-#         def backtrack(combination, next_digits):
-#             # if there is no more digits to check
-#             if len(next_digits) == 0:
-#                 # the combination is done
-#                 output.append(combination)
-#             # if there are still digits to check
-#             else:
-#                 # iterate over all letters which map 
-#                 # the next available digit
-#                 for letter in phone[next_digits[0]]:
-#                     # append the current letter to the combination
-#                     # and proceed to the next digits
-#                     backtrack(combination + letter, next_digits[1:])
-                    
-#         output = []
-#         if digits:
-#             backtrack("", digits)
-#         return output
-
-
-
-
-
-# def letterCombinations(self, digits: str) -> List[str]:
-#         num_to_alpha = {
-#             '2': list('abc'),
-#             '3': list('def'),
-#             '4': list('ghi'),
-#             '5': list('jkl'),
-#             '6': list('mno'),
-#             '7': list('pqrs'),
-#             '8': list('tuv'),
-#             '9': list('wxyz')
-#         }
-#         ans = []
+        curr_digit = self.digits[digit_index]
         
-#         for num in digits:
-#             if ans:
-#                 temp = []       
-#                 for i in range(len(ans)):
-#                     for e in num_to_alpha[num]:
-#                         temp.append(ans[i] + e)
-#                 ans = temp
-#             else:
-#                 for e in num_to_alpha[num]:
-#                     ans.append(e)
-     
-#         return ans
+        # Branch next combinations on each possible letter for this digit
+        for next_letter in self.num_letters[curr_digit]:
+            next_str = deepcopy(curr_str) + next_letter
+            self.letterCombinations_util(next_str, digit_index+1)
+
+
+    def letterCombinations(self, digits: str) -> List[str]:
+        # Map each digit to its corresponding set of letters
+        # input is restricted to string of digits 2-9 inclusive
+        self.num_letters = {
+            '2' : ['a','b','c'], '3' : ['d','e','f'], '4': ['g','h','i'], '5' : ['j','k','l'],
+            '6' : ['m','n','o'], '7' : ['p','q','r','s'], '8' : ['t','u','v'], '9' : ['w','x','y','z']
+        }
+
+        # Base case inputs
+        if len(digits) == 0: return []
+        elif len(digits) == 1 : return self.num_letters[digits]
+
+        # Otherwise use recursive backtracking to generate all combinations
+        self.combos = []
+        self.digits = digits
+        self.exit_len = len(digits)
+        self.letterCombinations_util(curr_str="", digit_index=0)
+
+        return self.combos
+
+
+
+
+
+s = Solution()
+
+# Expected: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
+digits = "23"
+
+# Expected: ["a","b","c"]
+# digits = "2"
+
+
+print(s.letterCombinations(digits))
