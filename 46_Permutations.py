@@ -3,20 +3,18 @@ from copy import deepcopy
 
 class Solution:
     # Recursively generate all permutations
-    def permute_util(self, curr_nums, num_index, remain_nums):
-        # Base case, save permutation as tuple over list 
-        # for performance and exit
+    def permute_util(self, curr_str, num_index, remain_nums):
+        # Base case, save permutation and exit
         if num_index == self.exit_len:
-            self.permutations.append(curr_nums)
+            self.permutations.append(curr_str[1:].split(','))
         else:
             for next_num in remain_nums:
                 # Branch on the next possible number and remove it from the 
                 # remaining_nums set for the next recurse
-                next_nums = deepcopy(curr_nums)
-                next_nums.append(next_num)
+                next_str = deepcopy(curr_str) + "," + str(next_num)
                 next_remain_nums = deepcopy(remain_nums)
                 next_remain_nums.remove(next_num)
-                self.permute_util(next_nums, num_index+1, next_remain_nums)
+                self.permute_util(next_str, num_index+1, next_remain_nums)
 
     def permute(self, nums: List[int]) -> List[List[int]]:        
         # Base input cases
@@ -26,7 +24,7 @@ class Solution:
 
         # Backtrack permutations
         self.permutations = []
-        self.permute_util(curr_nums=[], num_index=0, remain_nums=nums)
+        self.permute_util(curr_str="", num_index=0, remain_nums=nums)
 
         return self.permutations
 

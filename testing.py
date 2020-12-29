@@ -1,5 +1,6 @@
-a = "abcd"
+a = 1
 
-ab = tuple(a)
+for a in range(10):
+    print("z")
 
-print(ab)
+print("\n", a)
