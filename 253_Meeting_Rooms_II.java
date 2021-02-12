@@ -13,6 +13,7 @@ class Solution {
         int numRooms = 0;
         PriorityQueue<Integer> minHeap = new PriorityQueue<>();
         
+        
         for(int[] interval : intervals){
             // There is a room that will become available before the current interval starts
             if(minHeap.size() > 0 && minHeap.peek() <= interval[0]){
