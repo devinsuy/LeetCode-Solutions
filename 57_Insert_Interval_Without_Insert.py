@@ -6,54 +6,35 @@ class Solution:
         if(not intervals):
             return [newInterval]
         
-        # Use binary search to locate the index we would insert the new interval O(logn)
+        # Locate index of where newInterval would be inserted using binary search O(logn)
         insertIndex = bisect.bisect(intervals, newInterval)
         
-        # The item belongs at the front of the list
+        prev = newInterval
         if(insertIndex == 0):
-            i = 0
-            prev = newInterval
-            curr = intervals[i]
             merged = []
-        # The item would be inserted somewhere past the front
+            i = 0
         else:
-            i = insertIndex - 1
-            prev = intervals[i]
-            curr = newInterval
-        
-        
-        # Copy all intervals up to the element left of our insert (these are unaffected)
-        merged = intervals[:i]
-        
-        # Check the remaining intervals for merging
-        while(True):
-            if(prev[1] >= curr[0]):                         # There is overlap between these intervals
-                while(prev[1] >= curr[0]):
-                    # Merge the two intervals
-                    minStart = min(prev[0], curr[0])
-                    maxEnd = max(prev[1], curr[1])
-                    prev = [minStart, maxEnd]
-
-                    # Update pointer, merging may not yet be done
-                    i += 1
-                    if(i == len(intervals)): break
-                    curr = intervals[i]
-                
-                # Add the newly merged interval, copy the remaining intervals
-                merged.append(prev)
-                merged.extend(intervals[i:])
-                return merged
+            i = insertIndex
+            # Copy all elements up to one before the insertion
+            merged = intervals[:i-1]
             
-            # There is no overlap, add interval and advance pointers
+            # Check if the element just before the insertion point can be merged with newInterval
+            intBeforeMerge = intervals[i-1]
+            if(intBeforeMerge[1] >= newInterval[0]):
+                prev = [min(intBeforeMerge[0], newInterval[0]), max(intBeforeMerge[1], newInterval[1])]
             else:
-                merged.append(prev)
+                merged.append(intBeforeMerge)
+        
+        # Merge until no longer possible, add the newly created interval
+        while(i < len(intervals)):
+            curr = intervals[i]
+            if(prev[1] >= curr[0]):
+                prev = [min(prev[0], curr[0]), max(prev[1], curr[1])]
                 i += 1
-                
-                # The end of the list has been reached, add the last element
-                if(i == len(intervals)):
-                    merged.append(curr)
-                    return merged
-                
-                prev = curr
-                curr = intervals[i]
-                
+            else: 
+                break
+        merged.append(prev)
+        
+        # Copy the remaining elements
+        merged.extend(intervals[i:])
+        return merged
