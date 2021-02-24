@@ -1,1 +1,2 @@
-1
+
+    if(currQ.qsize() == lastQSize):

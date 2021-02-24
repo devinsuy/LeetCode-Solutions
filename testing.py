@@ -1,6 +1,12 @@
-a = 1
+a = {
+    'a' : 5,
+    'b' : 4,
+    'c' : 3,
+    'd' : 2,
+    'e' : 1
+}
 
-for a in range(10):
-    print("z")
+letters = a.keys()
 
-print("\n", a)
+letters.sort(key=lambda x: a[x], reverse=True)
+print(letters)

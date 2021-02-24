@@ -1,7 +1,7 @@
 from typing import List
 
 class LogSystem:
-
+    
     def __init__(self):
         self.logs = {}
         self.granIndex = {
