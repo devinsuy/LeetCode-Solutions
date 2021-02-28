@@ -4,38 +4,22 @@ class Solution:
         # Edge case
         if(len(time) < 2):
             return 0
-    
-        maxTime = max(time)
-        timeIndex = defaultdict(list)           # Map each time to a list of indicies it appears at
-        timeComps = defaultdict(set)            # Map each time to a list of its complement vals <= maxTime
         
-        # Build index mapping
-        for i, val in enumerate(time):
-            timeIndex[val].append(i)
-        
-        # Build complement values that would make a valid pair 
-        for val in time:
-            comp = 60 - (val % 60)
-            while(comp <= maxTime):
-                if(comp in timeIndex):
-                    timeComps[val].add(comp)
-                comp += 60
-        
-        # Return the number of indices a value appears to the right of an index
-        def validPairCount(leftIndex: int, val: int):
-            indices = timeIndex[val]
-            for i, index in enumerate(indices):
-                if(index > leftIndex):
-                    return len(indices) - i
-            return 0
-                
-        # For each complement, increment by the amount of indices to the right 
-        # of the given index that the complement appears at
+        # Map each mod 60 remainder to the number of values that generate this remainder
+        remainCount = defaultdict(int)
         pairCount = 0
-        for i, val in enumerate(time):
-            for comp in timeComps[val]:
-                if(comp in timeIndex):
-                    pairCount += validPairCount(i, comp)
+        
+        # Increment pairCount by the amount of previously seen values that have 
+        # a remainder equal to the desired complement, update count for curr remainder
+        for val in time:
+            if(val % 60 == 0):
+                remainder = comp = 0
+            else:
+                remainder = val % 60
+                comp = 60 - remainder
+                
+            pairCount += remainCount[comp]
+            remainCount[remainder] += 1
                     
         return pairCount
                     
