@@ -15,9 +15,8 @@ class Solution:
                 qty += 1
             else:
                 if(qty != 1):                           # Append quantity digit by digit and reset
-                    qty = str(qty)
-                    for i in range(len(qty)): 
-                        chars[outPtr] = qty[i]
+                    for digit in str(qty): 
+                        chars[outPtr] = digit
                         outPtr += 1
                     qty = 1
                     
@@ -27,9 +26,8 @@ class Solution:
                 
         # Add last quantity
         if(qty != 1):
-            qty = str(qty)
-            for i in range(len(qty)): 
-                chars[outPtr] = qty[i]
+            for digit in str(qty): 
+                chars[outPtr] = digit
                 outPtr += 1
         
         # Remove any characters past the end of the compressed string
