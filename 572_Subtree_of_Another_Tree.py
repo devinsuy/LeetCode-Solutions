@@ -16,36 +16,16 @@ class Solution(object):
         """
         
         def sameTree(sCurr, tCurr):
-            # Base case, single node
-            if(not sCurr.left and not sCurr.right):
-                if(tCurr.left or tCurr.right):
-                    return False
-                return sCurr.val == tCurr.val
+            # Base case, both nodes are null
+            if(not sCurr and not tCurr):
+                return True
+            # Base case, only one of the two nodes is null
+            if(not sCurr or not tCurr):
+                return False
             
-            # Both nodes should have a left or right subtree if the other does
-            if(sCurr.left and not tCurr.left): return False
-            if(not sCurr.left and tCurr.left): return False
-            if(tCurr.right and not sCurr.right): return False
-            if(not tCurr.right and sCurr.right): return False
+            # Recurse left and right subtrees if value matches
+            return sCurr.val == tCurr.val and sameTree(sCurr.left, tCurr.left) and sameTree(sCurr.right, tCurr.right)
             
-            # Both nodes should have equivalent children, recurse subtrees
-            if(not tCurr.left and not tCurr.right):   
-                return sCurr.val == tCurr.val
-            else:
-                leftMatches = rightMatches = True
-                if(tCurr.left):
-                    if(not sCurr.left or sCurr.left.val != tCurr.left.val):
-                        return False
-                    else:
-                        leftMatches = sameTree(sCurr.left, tCurr.left)
-
-                if(tCurr.right):
-                    if(not sCurr.right or sCurr.right.val != tCurr.right.val):
-                        return False
-                    else:
-                        rightMatches = sameTree(sCurr.right, tCurr.right)
-            
-            return leftMatches and rightMatches
         
         # Check each subtree that shares the same root as t
         q = deque()
